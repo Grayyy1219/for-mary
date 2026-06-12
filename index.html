@@ -8,721 +8,26 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap"
       rel="stylesheet"
     />
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      :root {
-        --bg: #0a0812;
-        --surface: #110e1c;
-        --accent: #b07fd4;
-        --accent2: #7b52ab;
-        --blue: #7ec8e3;
-        --text: #f3eeff;
-        --muted: #8b7fa5;
-        --glow: rgba(176, 127, 212, 0.2);
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        background:
-          radial-gradient(
-            circle at 20% 15%,
-            rgba(126, 200, 227, 0.12),
-            transparent 32rem
-          ),
-          radial-gradient(
-            circle at 78% 20%,
-            rgba(176, 127, 212, 0.14),
-            transparent 28rem
-          ),
-          var(--bg);
-        color: var(--text);
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: 300;
-        overflow-x: hidden;
-        min-height: 100vh;
-      }
-
-      .ambient-bg,
-      #particles {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-      }
-
-      .ambient-bg {
-        z-index: 0;
-        overflow: hidden;
-      }
-
-      .ambient-bg::before,
-      .ambient-bg::after {
-        content: "";
-        position: absolute;
-        inset: -25%;
-        opacity: 0.55;
-        filter: blur(22px);
-        animation: ambientDrift 34s ease-in-out infinite alternate;
-      }
-
-      .ambient-bg::before {
-        background:
-          radial-gradient(
-            circle at 30% 35%,
-            rgba(176, 127, 212, 0.2),
-            transparent 20rem
-          ),
-          radial-gradient(
-            circle at 68% 58%,
-            rgba(126, 200, 227, 0.16),
-            transparent 24rem
-          );
-      }
-
-      .ambient-bg::after {
-        background:
-          radial-gradient(
-            circle at 78% 22%,
-            rgba(255, 255, 255, 0.07),
-            transparent 18rem
-          ),
-          radial-gradient(
-            circle at 18% 70%,
-            rgba(123, 82, 171, 0.18),
-            transparent 20rem
-          );
-        animation-duration: 46s;
-        animation-direction: alternate-reverse;
-      }
-
-      #particles {
-        z-index: 0;
-      }
-
-      .hero {
-        position: relative;
-        z-index: 1;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 2rem;
-        gap: 1rem;
-      }
-
-      .eyebrow {
-        font-size: clamp(0.65rem, 2vw, 0.82rem);
-        letter-spacing: 0.38em;
-        text-transform: uppercase;
-        color: var(--accent);
-        opacity: 0;
-        animation: fadeUp 0.8s 0.3s forwards;
-      }
-
-      .hero-name {
-        font-family: cursive;
-        font-size: clamp(4rem, 14vw, 10rem);
-        font-weight: 700;
-        line-height: 1;
-        background: linear-gradient(
-          135deg,
-          var(--text) 20%,
-          var(--accent) 60%,
-          var(--blue)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        opacity: 0;
-        animation: fadeUp 1s 0.6s forwards;
-      }
-
-      .hero-fullname {
-        font-family: cursive;
-        font-style: italic;
-        font-size: clamp(0.8rem, 2vw, 1rem);
-        color: var(--muted);
-        letter-spacing: 0.12em;
-        opacity: 0;
-        animation: fadeUp 0.7s 1s forwards;
-      }
-
-      .hero-bday {
-        font-size: clamp(0.7rem, 1.8vw, 0.85rem);
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        color: var(--accent);
-        opacity: 0;
-        animation: fadeUp 0.7s 1.2s forwards;
-      }
-
-      .hero-sub {
-        font-family: cursive;
-        font-style: italic;
-        font-size: clamp(1rem, 3vw, 1.4rem);
-        color: var(--muted);
-        opacity: 0;
-        animation: fadeUp 0.8s 1.5s forwards;
-        margin-top: 0.5rem;
-      }
-
-      .scroll-hint {
-        position: absolute;
-        bottom: 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.4rem;
-        color: var(--muted);
-        font-size: 0.65rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        opacity: 0;
-        animation: fadeIn 1s 2.2s forwards;
-      }
-      .scroll-hint .line {
-        width: 1px;
-        height: 40px;
-        background: linear-gradient(to bottom, var(--accent), transparent);
-        animation: lineGrow 1.5s 2.8s ease-in-out infinite;
-      }
-
-      .photo-section {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        justify-content: center;
-        padding: 4rem 2rem 2rem;
-      }
-
-      .photo-frame {
-        position: relative;
-        width: min(600px, 82vw);
-        aspect-ratio: 3/4;
-        border-radius: 14px;
-        overflow: hidden;
-        transform: scale(1.5);
-        box-shadow:
-          0 0 60px var(--glow),
-          0 0 120px rgba(123, 82, 171, 0.1);
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 0.9s,
-          transform 0.9s;
-      }
-      .photo-frame.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .photo-media {
-        width: 100%;
-        height: 100%;
-        transform: scale(1.5);
-        object-fit: cover;
-        filter: saturate(0.92) contrast(1.04);
-      }
-
-      .photo-frame.has-media .photo-placeholder {
-        display: none;
-      }
-
-      .photo-placeholder {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(160deg, #1a1228, #231640);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        color: var(--muted);
-        font-size: 0.78rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        text-align: center;
-        padding: 1.5rem;
-      }
-      .photo-placeholder .icon {
-        font-size: 2.5rem;
-        opacity: 0.4;
-      }
-
-      .photo-caption {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(to top, rgba(10, 8, 18, 0.95), transparent);
-        padding: 2rem 1.2rem 1.2rem;
-        font-family: cursive;
-        font-style: italic;
-        font-size: 0.9rem;
-        color: var(--accent);
-        text-align: center;
-      }
-
-      .about-section {
-        position: relative;
-        z-index: 1;
-        max-width: 700px;
-        margin: 0 auto;
-        padding: 3rem 2rem;
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 0.9s,
-          transform 0.9s;
-      }
-      .about-section.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .section-label {
-        font-size: 0.7rem;
-        letter-spacing: 0.35em;
-        text-transform: uppercase;
-        color: var(--accent);
-        text-align: center;
-        margin-bottom: 2.5rem;
-      }
-
-      .things-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 1rem;
-      }
-
-      .thing-card {
-        background: var(--surface);
-        border: 1px solid rgba(176, 127, 212, 0.15);
-        border-radius: 10px;
-        padding: 1rem 0.8rem;
-        text-align: center;
-        transition:
-          border-color 0.3s,
-          box-shadow 0.3s;
-      }
-      .thing-card:hover {
-        border-color: rgba(176, 127, 212, 0.45);
-        box-shadow: 0 0 20px var(--glow);
-      }
-      .thing-card .emoji {
-        font-size: 1.6rem;
-        display: block;
-        margin-bottom: 0.4rem;
-      }
-      .thing-card .label {
-        font-size: 0.75rem;
-        color: var(--muted);
-        letter-spacing: 0.08em;
-      }
-
-      .cats-section {
-        position: relative;
-        z-index: 1;
-        max-width: 700px;
-        margin: 0 auto;
-        padding: 1rem 2rem 3rem;
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 0.9s 0.1s,
-          transform 0.9s 0.1s;
-      }
-      .cats-section.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .cats-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.8rem;
-        margin-top: 0.5rem;
-      }
-
-      .cat-chip {
-        background: linear-gradient(
-          135deg,
-          rgba(176, 127, 212, 0.12),
-          rgba(123, 82, 171, 0.08)
-        );
-        border: 1px solid rgba(176, 127, 212, 0.2);
-        border-radius: 999px;
-        padding: 0.5rem 1.1rem;
-        font-size: 0.82rem;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-      }
-      .cat-chip .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
-
-      .dreams-section {
-        position: relative;
-        z-index: 1;
-        max-width: 700px;
-        margin: 0 auto;
-        padding: 1rem 2rem 4rem;
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 0.9s 0.15s,
-          transform 0.9s 0.15s;
-      }
-      .dreams-section.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .dream-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-        margin-top: 0.5rem;
-      }
-
-      .dream-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: var(--surface);
-        border: 1px solid rgba(176, 127, 212, 0.12);
-        border-radius: 10px;
-        padding: 1rem 1.2rem;
-      }
-      .dream-item .dream-icon {
-        font-size: 1.4rem;
-        flex-shrink: 0;
-      }
-      .dream-item .dream-text {
-        font-size: 0.88rem;
-        line-height: 1.5;
-        color: var(--text);
-      }
-      .dream-item .dream-text strong {
-        color: var(--accent);
-        font-weight: 400;
-      }
-
-      .message-section {
-        position: relative;
-        z-index: 1;
-        max-width: 660px;
-        margin: 0 auto;
-        padding: 2rem 2.5rem 4rem;
-        text-align: center;
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 0.9s 0.2s,
-          transform 0.9s 0.2s;
-      }
-      .message-section.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .message-body {
-        font-family: cursive;
-        font-size: clamp(1rem, 2.5vw, 1.25rem);
-        line-height: 1.95;
-        color: var(--text);
-        opacity: 0.92;
-      }
-      .message-body p + p {
-        margin-top: 1.4em;
-      }
-
-      .message-sig {
-        margin-top: 2.5rem;
-        font-family: cursive;
-        font-style: italic;
-        font-size: 1rem;
-        color: var(--accent);
-      }
-
-      .closing {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        padding: 3rem 2rem 7rem;
-        opacity: 0;
-        transition: opacity 1s;
-      }
-      .closing.visible {
-        opacity: 1;
-      }
-
-      .closing-text {
-        font-family: cursive;
-        font-size: clamp(1.8rem, 6vw, 3.5rem);
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--accent), var(--blue));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-      .closing-sub {
-        margin-top: 1rem;
-        font-size: 0.82rem;
-        color: var(--muted);
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-      }
-
-      .music-player {
-        position: fixed;
-        right: 1.5rem;
-        bottom: 1.5rem;
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        gap: 0.85rem;
-        width: min(92vw, 380px);
-        min-height: 64px;
-        padding: 0.55rem 0.75rem 0.55rem 0.55rem;
-        overflow: hidden;
-        border: 1px solid rgba(176, 127, 212, 0.28);
-        border-radius: 999px;
-        background: rgba(10, 8, 18, 0.88);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 20px rgba(176, 127, 212, 0.08);
-        transform-origin: right center;
-        transition:
-          width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-          min-height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-          padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-          gap 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-          box-shadow 0.3s,
-          transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      .music-player.is-compact {
-        width: 58px;
-        min-height: 58px;
-        gap: 0;
-        padding: 0.4rem;
-        box-shadow: 0 0 26px rgba(176, 127, 212, 0.2);
-      }
-
-      .music-icon-btn {
-        width: 46px;
-        height: 46px;
-        flex: 0 0 46px;
-        border-radius: 50%;
-        border: 1px solid rgba(176, 127, 212, 0.34);
-        background:
-          radial-gradient(circle at 50% 50%, rgba(10, 8, 18, 0.95) 0 22%, transparent 23%),
-          conic-gradient(from 160deg, var(--accent), var(--blue), var(--accent2), var(--accent));
-        color: var(--text);
-        font-size: 1.12rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        transition:
-          border-color 0.3s,
-          box-shadow 0.3s,
-          transform 0.3s;
-      }
-
-      .music-icon-btn::after {
-        content: "";
-        position: absolute;
-        inset: 7px;
-        border-radius: inherit;
-        border: 1px solid rgba(243, 238, 255, 0.18);
-        pointer-events: none;
-      }
-
-      .music-icon-btn:hover {
-        border-color: var(--accent);
-        box-shadow: 0 0 20px var(--glow);
-        transform: translateY(-1px) scale(1.03);
-      }
-
-      .music-icon-btn:focus-visible {
-        outline: 2px solid var(--blue);
-        outline-offset: 3px;
-      }
-
-      .music-icon-glyph {
-        position: relative;
-        z-index: 1;
-        line-height: 1;
-      }
-
-      .music-player.is-playing .music-icon-btn {
-        animation: rotateDisc 2.8s linear infinite;
-      }
-
-      .player-details,
-      .player-controls {
-        min-width: 0;
-        transition:
-          opacity 0.25s ease,
-          max-width 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-          transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-          margin 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      .player-details {
-        flex: 1 1 auto;
-        max-width: 190px;
-      }
-
-      .song-label {
-        display: block;
-        margin-bottom: 0.12rem;
-        color: var(--muted);
-        font-size: 0.58rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-      }
-
-      .song-title {
-        color: var(--text);
-        font-size: 0.86rem;
-        font-weight: 400;
-        line-height: 1.25;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .player-controls {
-        flex: 0 1 150px;
-        max-width: 150px;
-      }
-
-      .music-player.is-compact .player-details,
-      .music-player.is-compact .player-controls {
-        max-width: 0;
-        opacity: 0;
-        margin: 0;
-        pointer-events: none;
-        transform: scale(0.82);
-      }
-
-      .song-select {
-        width: 100%;
-        border: 1px solid rgba(176, 127, 212, 0.24);
-        border-radius: 999px;
-        background: rgba(17, 14, 28, 0.9);
-        color: var(--text);
-        font-size: 0.76rem;
-        padding: 0.5rem 1.8rem 0.5rem 0.75rem;
-        cursor: pointer;
-        outline: none;
-      }
-
-      .song-select:focus,
-      .song-select:hover {
-        border-color: rgba(176, 127, 212, 0.65);
-      }
-
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(24px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      @keyframes lineGrow {
-        0%,
-        100% {
-          transform: scaleY(1);
-          opacity: 0.5;
-        }
-        50% {
-          transform: scaleY(1.4);
-          opacity: 1;
-        }
-      }
-
-      @keyframes ambientDrift {
-        from {
-          transform: translate3d(-2%, -1%, 0) scale(1);
-        }
-        to {
-          transform: translate3d(2%, 3%, 0) scale(1.08);
-        }
-      }
-      @keyframes rotateDisc {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      @media (max-width: 520px) {
-        .music-player {
-          left: 50%;
-          right: auto;
-          transform: translateX(-50%);
-          width: calc(100% - 2rem);
-          justify-content: center;
-        }
-
-        .music-player.is-compact {
-          left: auto;
-          right: 1rem;
-          transform: none;
-          width: 58px;
-        }
-
-        .song-select {
-          flex: 1;
-          max-width: none;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          animation-duration: 0.01ms !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-    </style>
+  <link rel="stylesheet" href="style.css">
   </head>
-  <body>
+  <body class="is-loading">
     <div class="ambient-bg" aria-hidden="true"></div>
     <canvas id="particles" aria-hidden="true"></canvas>
+
+    <div
+      class="loader-overlay"
+      id="loaderOverlay"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="loader-card" aria-label="Loading birthday surprise">
+        <div class="skeleton-hero"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line short"></div>
+        <p class="loader-text">Preparing Kate's birthday surprise</p>
+      </div>
+    </div>
 
     <section class="hero">
       <p class="eyebrow">June 12 · For someone special</p>
@@ -929,6 +234,28 @@
       </div>
     </div>
 
+    <div
+      class="audio-modal"
+      id="audioModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="audioModalTitle"
+      aria-describedby="audioModalCopy"
+    >
+      <div class="audio-modal-card">
+        <div class="audio-modal-icon" aria-hidden="true">♪</div>
+        <h2 class="audio-modal-title" id="audioModalTitle">
+          Helolll Kisaraaaaaaaaa
+        </h2>
+        <p class="audio-modal-copy" id="audioModalCopy">
+          Turn your volume up and set your screen brightness high for the best experience.
+        </p>
+        <button class="start-audio-btn" id="startAudioBtn" type="button">
+          Start
+        </button>
+      </div>
+    </div>
+
     <script>
       const canvas = document.getElementById("particles");
       const ctx = canvas.getContext("2d");
@@ -1066,6 +393,9 @@
       const musicBtn = document.getElementById("musicBtn");
       const songSelect = document.getElementById("songSelect");
       const songTitle = document.getElementById("songTitle");
+      const loaderOverlay = document.getElementById("loaderOverlay");
+      const audioModal = document.getElementById("audioModal");
+      const startAudioBtn = document.getElementById("startAudioBtn");
       let currentSong = 0;
       let playing = false;
       let miniPlayerTimer;
@@ -1111,22 +441,54 @@
         }
       }
 
-      function playMusicWhenReady() {
-        audio
+      function hideLoader() {
+        document.body.classList.remove("is-loading");
+        loaderOverlay.classList.add("is-hidden");
+        window.setTimeout(() => {
+          loaderOverlay.setAttribute("aria-hidden", "true");
+        }, 600);
+      }
+
+      function showAudioModal() {
+        audioModal.classList.add("is-visible");
+        window.setTimeout(() => startAudioBtn.focus(), 120);
+      }
+
+      function hideAudioModal() {
+        audioModal.classList.remove("is-visible");
+      }
+
+      function playMusicWhenReady({ showModalOnFail = false } = {}) {
+        return audio
           .play()
-          .then(() => setMusicState(true))
+          .then(() => {
+            setMusicState(true);
+            hideAudioModal();
+            return true;
+          })
           .catch(() => {
             setMusicState(false);
+            if (showModalOnFail) {
+              showAudioModal();
+            }
+            return false;
           });
       }
 
       function playNextSong() {
         loadSong(currentSong + 1);
-        playMusicWhenReady();
+        playMusicWhenReady({ showModalOnFail: true });
       }
 
       loadSong(currentSong);
-      window.addEventListener("load", playMusicWhenReady, { once: true });
+      window.addEventListener(
+        "load",
+        () => {
+          hideLoader();
+          playMusicWhenReady({ showModalOnFail: true });
+        },
+        { once: true },
+      );
 
       songSelect.addEventListener("change", (event) => {
         const selectedSong = Number(event.target.value);
@@ -1134,7 +496,7 @@
         loadSong(selectedSong);
 
         if (shouldResume) {
-          playMusicWhenReady();
+          playMusicWhenReady({ showModalOnFail: true });
         }
       });
 
@@ -1146,8 +508,12 @@
         if (playing) {
           audio.pause();
         } else {
-          playMusicWhenReady();
+          playMusicWhenReady({ showModalOnFail: true });
         }
+      });
+
+      startAudioBtn.addEventListener("click", () => {
+        playMusicWhenReady({ showModalOnFail: true });
       });
     </script>
   </body>
