@@ -928,14 +928,28 @@
       const revealEls = document.querySelectorAll(
         "#photoFrame, #aboutSection, #catsSection, #dreamsSection, #msgSection, #closing",
       );
-      const obs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) e.target.classList.add("visible");
-          });
-        },
-        { threshold: 0.1 },
-      );
+
+      function revealElement(element) {
+        element.classList.add("visible");
+      }
+
+      if ("IntersectionObserver" in window) {
+        const obs = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+
+              revealElement(entry.target);
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.1 },
+        );
+
+        revealEls.forEach((element) => obs.observe(element));
+      } else {
+        revealEls.forEach(revealElement);
+      }
       const songs = ["song (1).mp3", "song (2).mp3"];
       const audio = document.getElementById("bgMusic");
       const musicPlayer = document.getElementById("musicPlayer");
