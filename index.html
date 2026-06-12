@@ -8,11 +8,12 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap"
       rel="stylesheet"
     />
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body class="is-loading">
     <div class="ambient-bg" aria-hidden="true"></div>
     <canvas id="particles" aria-hidden="true"></canvas>
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
     <div
       class="loader-overlay"
@@ -30,11 +31,45 @@
     </div>
 
     <section class="hero">
-      <p class="eyebrow">June 12 · For someone special</p>
+      <div class="birthday-banderitas" aria-hidden="true">
+        <div class="banderita-string banderita-string-left">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="banderita-string banderita-string-right">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <p class="eyebrow">June 12 · Happy 19th Birthday</p>
       <h1 class="hero-name">Kate</h1>
       <p class="hero-fullname">Mary Katelyn Rodriguez</p>
-      <p class="hero-bday">🎂 June 12, 2007</p>
-      <p class="hero-sub">Happy Birthday, my Enemy</p>
+      <p class="hero-bday">🎂 Born June 12, 2007</p>
+      <p class="hero-sub">Today is all about celebrating you</p>
+      <p class="hero-wish">
+          Oh? akala mo nakalimutan ko na?, basta may your birthday be filled with sweet moments, big smiles, and every
+        little thing that makes you feel loved.
+      </p>
       <div class="scroll-hint">
         <span>scroll</span>
         <div class="line"></div>
@@ -63,9 +98,7 @@
           <span class="icon">📷</span>
           <span>Place Kate's photo or looping video here</span>
         </div>
-        <div class="photo-caption">
-          "huhu eto lang meron ako"
-        </div>
+        <div class="photo-caption">"huhu eto lang meron ako"</div>
       </div>
     </section>
 
@@ -248,7 +281,8 @@
           Helolll Kisaraaaaaaaaa
         </h2>
         <p class="audio-modal-copy" id="audioModalCopy">
-          Turn your volume up and set your screen brightness high for the best experience.
+          Turn your volume up and set your screen brightness high for the best
+          experience.
         </p>
         <button class="start-audio-btn" id="startAudioBtn" type="button">
           Start
@@ -262,7 +296,14 @@
       let W,
         H,
         pts = [];
-      const SYMBOLS = ["💜", "🌸", "✨", "🧊", "🍣", "🏍️", "📷", "🌻"];
+      const SYMBOLS = ["🎂", "🎉", "🎈", "✨", "💜", "🩵", "🌸", "🌻"];
+      const CONFETTI_COLORS = [
+        "#b07fd4",
+        "#7ec8e3",
+        "#f3eeff",
+        "#ffd166",
+        "#ff8fab",
+      ];
 
       function resize() {
         W = canvas.width = window.innerWidth;
@@ -480,11 +521,44 @@
         playMusicWhenReady({ showModalOnFail: true });
       }
 
+      function launchBirthdayConfetti() {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+          return;
+
+        const confettiLayer = document.getElementById("confettiLayer");
+        const pieceCount = 90;
+        confettiLayer.replaceChildren();
+
+        for (let i = 0; i < pieceCount; i++) {
+          const piece = document.createElement("span");
+          const isRibbon = Math.random() > 0.72;
+          piece.className = `confetti-piece${isRibbon ? " is-ribbon" : ""}`;
+          piece.style.setProperty("--x", `${Math.random() * 100}vw`);
+          piece.style.setProperty("--fall", `${70 + Math.random() * 38}vh`);
+          piece.style.setProperty(
+            "--drift",
+            `${(Math.random() - 0.5) * 180}px`,
+          );
+          piece.style.setProperty("--spin", `${Math.random() * 720 - 360}deg`);
+          piece.style.setProperty("--delay", `${Math.random() * 0.45}s`);
+          piece.style.setProperty(
+            "--duration",
+            `${2.2 + Math.random() * 1.8}s`,
+          );
+          piece.style.background =
+            CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+          confettiLayer.appendChild(piece);
+        }
+
+        window.setTimeout(() => confettiLayer.replaceChildren(), 5200);
+      }
+
       loadSong(currentSong);
       window.addEventListener(
         "load",
         () => {
           hideLoader();
+          window.setTimeout(launchBirthdayConfetti, 650);
           playMusicWhenReady({ showModalOnFail: true });
         },
         { once: true },
