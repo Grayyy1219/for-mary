@@ -797,6 +797,20 @@
       const audio = document.getElementById("bgMusic");
       const musicBtn = document.getElementById("musicBtn");
       let playing = false;
+       function setMusicState(isPlaying) {
+        playing = isPlaying;
+        musicBtn.textContent = isPlaying ? "⏸" : "♪";
+        musicBtn.classList.toggle("playing", isPlaying);
+      }
+
+      function playMusicWhenReady() {
+        audio.play().then(() => setMusicState(true)).catch(() => {
+          setMusicState(false);
+        });
+      }
+
+      window.addEventListener("load", playMusicWhenReady, { once: true });
+
       musicBtn.addEventListener("click", () => {
         if (playing) {
           audio.pause();
@@ -807,7 +821,6 @@
           musicBtn.textContent = "⏸";
           musicBtn.classList.add("playing");
         }
-        playing = !playing;
       });
     </script>
   </body>
