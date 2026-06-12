@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday, Kate 🎂</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0a0812;
+        --surface: #110e1c;
+        --accent: #b07fd4;
+        --accent2: #7b52ab;
+        --blue: #7ec8e3;
+        --text: #f3eeff;
+        --muted: #8b7fa5;
+        --glow: rgba(176, 127, 212, 0.2);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 300;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+
+      #particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .hero {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        gap: 1rem;
+      }
+
+      .eyebrow {
+        font-size: clamp(0.65rem, 2vw, 0.82rem);
+        letter-spacing: 0.38em;
+        text-transform: uppercase;
+        color: var(--accent);
+        opacity: 0;
+        animation: fadeUp 0.8s 0.3s forwards;
+      }
+
+      .hero-name {
+        font-family: cursive;
+        font-size: clamp(4rem, 14vw, 10rem);
+        font-weight: 700;
+        line-height: 1;
+        background: linear-gradient(
+          135deg,
+          var(--text) 20%,
+          var(--accent) 60%,
+          var(--blue)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        opacity: 0;
+        animation: fadeUp 1s 0.6s forwards;
+      }
+
+      .hero-fullname {
+        font-family: cursive;
+        font-style: italic;
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        opacity: 0;
+        animation: fadeUp 0.7s 1s forwards;
+      }
+
+      .hero-bday {
+        font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--accent);
+        opacity: 0;
+        animation: fadeUp 0.7s 1.2s forwards;
+      }
+
+      .hero-sub {
+        font-family: cursive;
+        font-style: italic;
+        font-size: clamp(1rem, 3vw, 1.4rem);
+        color: var(--muted);
+        opacity: 0;
+        animation: fadeUp 0.8s 1.5s forwards;
+        margin-top: 0.5rem;
+      }
+
+      .scroll-hint {
+        position: absolute;
+        bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--muted);
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        opacity: 0;
+        animation: fadeIn 1s 2.2s forwards;
+      }
+      .scroll-hint .line {
+        width: 1px;
+        height: 40px;
+        background: linear-gradient(to bottom, var(--accent), transparent);
+        animation: lineGrow 1.5s 2.8s ease-in-out infinite;
+      }
+
+      .photo-section {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        padding: 4rem 2rem 2rem;
+      }
+
+      .photo-frame {
+        position: relative;
+        width: min(300px, 82vw);
+        aspect-ratio: 3/4;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow:
+          0 0 60px var(--glow),
+          0 0 120px rgba(123, 82, 171, 0.1);
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.9s,
+          transform 0.9s;
+      }
+      .photo-frame.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(0.92) contrast(1.04);
+      }
+
+      .photo-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(160deg, #1a1228, #231640);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 1.5rem;
+      }
+      .photo-placeholder .icon {
+        font-size: 2.5rem;
+        opacity: 0.4;
+      }
+
+      .photo-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(10, 8, 18, 0.95), transparent);
+        padding: 2rem 1.2rem 1.2rem;
+        font-family: cursive;
+        font-style: italic;
+        font-size: 0.9rem;
+        color: var(--accent);
+        text-align: center;
+      }
+
+      .about-section {
+        position: relative;
+        z-index: 1;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.9s,
+          transform 0.9s;
+      }
+      .about-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .section-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: var(--accent);
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .things-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+      }
+
+      .thing-card {
+        background: var(--surface);
+        border: 1px solid rgba(176, 127, 212, 0.15);
+        border-radius: 10px;
+        padding: 1rem 0.8rem;
+        text-align: center;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+      .thing-card:hover {
+        border-color: rgba(176, 127, 212, 0.45);
+        box-shadow: 0 0 20px var(--glow);
+      }
+      .thing-card .emoji {
+        font-size: 1.6rem;
+        display: block;
+        margin-bottom: 0.4rem;
+      }
+      .thing-card .label {
+        font-size: 0.75rem;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+      }
+
+      .cats-section {
+        position: relative;
+        z-index: 1;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 1rem 2rem 3rem;
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.9s 0.1s,
+          transform 0.9s 0.1s;
+      }
+      .cats-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .cats-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+      }
+
+      .cat-chip {
+        background: linear-gradient(
+          135deg,
+          rgba(176, 127, 212, 0.12),
+          rgba(123, 82, 171, 0.08)
+        );
+        border: 1px solid rgba(176, 127, 212, 0.2);
+        border-radius: 999px;
+        padding: 0.5rem 1.1rem;
+        font-size: 0.82rem;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .cat-chip .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .dreams-section {
+        position: relative;
+        z-index: 1;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 1rem 2rem 4rem;
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.9s 0.15s,
+          transform 0.9s 0.15s;
+      }
+      .dreams-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .dream-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        margin-top: 0.5rem;
+      }
+
+      .dream-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--surface);
+        border: 1px solid rgba(176, 127, 212, 0.12);
+        border-radius: 10px;
+        padding: 1rem 1.2rem;
+      }
+      .dream-item .dream-icon {
+        font-size: 1.4rem;
+        flex-shrink: 0;
+      }
+      .dream-item .dream-text {
+        font-size: 0.88rem;
+        line-height: 1.5;
+        color: var(--text);
+      }
+      .dream-item .dream-text strong {
+        color: var(--accent);
+        font-weight: 400;
+      }
+
+      .message-section {
+        position: relative;
+        z-index: 1;
+        max-width: 660px;
+        margin: 0 auto;
+        padding: 2rem 2.5rem 4rem;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.9s 0.2s,
+          transform 0.9s 0.2s;
+      }
+      .message-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .message-body {
+        font-family: cursive;
+        font-size: clamp(1rem, 2.5vw, 1.25rem);
+        line-height: 1.95;
+        color: var(--text);
+        opacity: 0.92;
+      }
+      .message-body p + p {
+        margin-top: 1.4em;
+      }
+
+      .message-sig {
+        margin-top: 2.5rem;
+        font-family: cursive;
+        font-style: italic;
+        font-size: 1rem;
+        color: var(--accent);
+      }
+
+      .closing {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 3rem 2rem 7rem;
+        opacity: 0;
+        transition: opacity 1s;
+      }
+      .closing.visible {
+        opacity: 1;
+      }
+
+      .closing-text {
+        font-family: cursive;
+        font-size: clamp(1.8rem, 6vw, 3.5rem);
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent), var(--blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .closing-sub {
+        margin-top: 1rem;
+        font-size: 0.82rem;
+        color: var(--muted);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .music-btn {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 100;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 1px solid rgba(176, 127, 212, 0.3);
+        background: rgba(10, 8, 18, 0.85);
+        backdrop-filter: blur(8px);
+        color: var(--accent);
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+      .music-btn:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 20px var(--glow);
+      }
+      .music-btn.playing {
+        box-shadow: 0 0 25px var(--glow);
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes lineGrow {
+        0%,
+        100% {
+          transform: scaleY(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scaleY(1.4);
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+
+    <section class="hero">
+      <p class="eyebrow">June 12 · For someone special</p>
+      <h1 class="hero-name">Kate</h1>
+      <p class="hero-fullname">Mary Katelyn Rodriguez</p>
+      <p class="hero-bday">🎂 June 12, 2007</p>
+      <p class="hero-sub">Happy Birthday, my Enemy</p>
+      <div class="scroll-hint">
+        <span>scroll</span>
+        <div class="line"></div>
+      </div>
+    </section>
+
+    <section class="photo-section">
+      <div class="photo-frame" id="photoFrame">
+        <div class="photo-placeholder">
+          <span class="icon">📷</span>
+          <span>Place Kate's photo here</span>
+        </div>
+        <div class="photo-caption">
+          "The one who chews ice and still looks cute doing it 🧊"
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section" id="aboutSection">
+      <p class="section-label">A few things that are so Kate</p>
+      <div class="things-grid">
+        <div class="thing-card">
+          <span class="emoji">💜</span><span class="label">Purple & Blue</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🏍️</span
+          ><span class="label">Big Bike Dreams</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">📷</span><span class="label">Canon Digicam</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🧊</span><span class="label">Ice Chewer</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🌸</span><span class="label">Kuromi</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🍣</span
+          ><span class="label">Sushi & Buttered Shrimp</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🍫</span
+          ><span class="label">Choco Ice Cream</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🧃</span><span class="label">Coke Girl</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">📺</span><span class="label">Encantadia Fan</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🎓</span
+          ><span class="label">Multimedia Arts</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">🌻</span
+          ><span class="label">Sunflower & Lotus</span>
+        </div>
+        <div class="thing-card">
+          <span class="emoji">📞</span
+          ><span class="label">Call > Text, always</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cats-section" id="catsSection">
+      <p class="section-label">Her fur family 🐱</p>
+      <div class="cats-grid">
+        <div class="cat-chip">
+          <span class="dot" style="background: #e8923a"></span> Yan Yan · orange
+          yapper
+        </div>
+        <div class="cat-chip">
+          <span class="dot" style="background: #f5e6d0"></span> Coli · white &
+          orange
+        </div>
+        <div class="cat-chip">
+          <span class="dot" style="background: #f0c98a"></span> Loki · light
+          orange
+        </div>
+        <div class="cat-chip">
+          <span class="dot" style="background: #a78bca"></span> Bosy · the boy
+        </div>
+        <div class="cat-chip">
+          <span class="dot" style="background: #d4b8e0"></span> Kiyomi ✨
+        </div>
+      </div>
+    </section>
+
+    <section class="dreams-section" id="dreamsSection">
+      <p class="section-label">Things she's going for</p>
+      <div class="dream-list">
+        <div class="dream-item">
+          <span class="dream-icon">🗼</span>
+          <span class="dream-text"
+            >Walk the streets of <strong>Paris, France</strong>   and she
+            will.</span
+          >
+        </div>
+        <div class="dream-item">
+          <span class="dream-icon">🇪🇸</span>
+          <span class="dream-text"
+            >Feel the sun in <strong>Spain</strong>. It's on the list, it's
+            happening.</span
+          >
+        </div>
+        <div class="dream-item">
+          <span class="dream-icon">🏍️</span>
+          <span class="dream-text"
+            >Her own <strong>big bike</strong>, digicam in hand, wind in hair.
+            The dream.</span
+          >
+        </div>
+        <div class="dream-item">
+          <span class="dream-icon">🎨</span>
+          <span class="dream-text"
+            >A career in <strong>Multimedia Arts</strong>   because she's
+            creative like that.</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="message-section" id="msgSection">
+      <p class="section-label">A message for you</p>
+      <div class="message-body">
+        <p>Happy Birthday, Kate.</p>
+
+        <p>
+          I iduno where to start, but I hope today reminds you how appreciated
+          you are by the people lucky enough to know you. Keep doing the things
+          that make you happy people who truly matter will always see something
+          special in that.
+        </p>
+
+        <p>
+          Just a reminder lang, college is gonna get more serious, make sure you
+          know your priorities and focus on the things that actually help you
+          grow. dont get too distracted from what really matters. Take care of
+          yourself and your goals.
+        </p>
+
+        <p>
+          I guess I’ve also been learning to give space and focus on my own
+          priorities too, especially with distance and different things going
+          on.
+        </p>
+
+        <p>
+          I hope this year brings you more reasons to smile, more wins worth
+          celebrating, and all the happiness you deserve.
+        </p>
+      </div>
+      <p class="message-sig"></p>-Gray 🩵</p>
+    </section>
+
+    <section class="closing" id="closing">
+      <p class="closing-text">Happy Birthday, Kate 🎂</p>
+    </section>
+    <audio id="bgMusic" loop>
+      <source src="song (1).mp3" type="audio/mpeg" />
+    </audio>
+    <button class="music-btn" id="musicBtn" title="Toggle music">♪</button>
+
+    <script>
+      const canvas = document.getElementById("particles");
+      const ctx = canvas.getContext("2d");
+      let W,
+        H,
+        pts = [];
+      const SYMBOLS = ["💜", "🌸", "✨", "🧊", "🍣", "🏍️", "📷", "🌻"];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+
+      function spawnParticle() {
+        return {
+          x: Math.random() * W,
+          y: H + 10,
+          r: Math.random() * 2.2 + 0.8,
+          speed: Math.random() * 0.55 + 0.18,
+          drift: (Math.random() - 0.5) * 0.35,
+          alpha: Math.random() * 0.45 + 0.15,
+          symbol:
+            Math.random() < 0.12
+              ? SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
+              : null,
+        };
+      }
+
+      for (let i = 0; i < 65; i++) {
+        const p = spawnParticle();
+        p.y = Math.random() * H;
+        pts.push(p);
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        pts.forEach((p) => {
+          if (p.symbol) {
+            ctx.globalAlpha = p.alpha * 0.55;
+            ctx.font = `${p.r * 7}px serif`;
+            ctx.fillText(p.symbol, p.x, p.y);
+          } else {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = "#b07fd4";
+            ctx.globalAlpha = p.alpha;
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+          p.y -= p.speed;
+          p.x += p.drift;
+          if (p.y < -20) Object.assign(p, spawnParticle());
+        });
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", resize);
+      resize();
+      draw();
+
+      const revealEls = document.querySelectorAll(
+        "#photoFrame, #aboutSection, #catsSection, #dreamsSection, #msgSection, #closing",
+      );
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      revealEls.forEach((el) => obs.observe(el));
+      const audio = document.getElementById("bgMusic");
+      const musicBtn = document.getElementById("musicBtn");
+      let playing = false;
+      musicBtn.addEventListener("click", () => {
+        if (playing) {
+          audio.pause();
+          musicBtn.textContent = "♪";
+          musicBtn.classList.remove("playing");
+        } else {
+          audio.play().catch(() => {});
+          musicBtn.textContent = "⏸";
+          musicBtn.classList.add("playing");
+        }
+        playing = !playing;
+      });
+    </script>
+  </body>
+</html>
